@@ -1,0 +1,105 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{bm}
+
+\begin{document}
+We go through the details of how portfolio level risk profile is derived.
+In this document we will consider both simple return and logrithmic return
+and their differences in deriving the conclusion.
+
+\section{Definition of Asset/Portfolio Return}
+Concepts defined in this section apply equally to both single financial 
+asset and portfolio made of these assets.
+
+For convenience, we use the following notation.
+
+Let \(P_{i,t}\) denote price of asset $i$ at day $t$. 
+
+Let \(n_i\) denote number of shares of asset $i$. This stays constant for
+each asset respectively. 
+
+We can obtain the following two type of returns:
+
+\begin{itemize}
+    \item Simple return:
+    \begin{math}
+    R^{(S)}_{i,t} = \displaystyle \frac{P_{i,t}}{P_{i,t-1}} - 1
+    \end{math}
+    
+    which implies that \(P_{i,t} = (1+R^{(S)}_{i,t})P_{i,t-1}\)
+    \item logrithmic return:
+    \begin{math}
+    R^{(L)}_{i,t} = \displaystyle \ln{\frac{P_{i,t}}{P_{i,t-1}}}
+    \end{math}
+    
+    which impies that \(P_{i,t} = e^{R^{(L)}_{i,t}}P_{i,t-1}\)
+\end{itemize}
+
+In exact form, we hvae 
+\[
+1+R^{(S)}_{i,t} = e^{R^{(L)}_{i,t}}
+\]
+
+Notice that when \(\frac{P_{i,t}}{P_{i,t-1}} \approx 1\), 
+the above two returns are equivalent, that is 
+\(R^{(S)}_{i,t} \approx R^{(L)}_{i,t}\) when \(P_{i,t} \approx P_{i,t-1}\)
+for small daily price changes.
+
+\section{Portfolio Daily Return}
+Here we work our portfolio daily return using both simple return and 
+logrithmic return at asset level. Given that simple return is a first order
+approximation of logrithmic return at asset level, we will try to derive 
+using logrithmic first:
+
+let \(V_t\) be the asset value of day $t$, which can be written as 
+\[
+V_t = \sum_{i}^{N} n_i P_{i,t} = \sum_{i}^{N} n_i P_{i,t-1} e^{R^{(L)}_{i,t}}
+\]
+where \(N\) denotes the total number of constituent assets. 
+
+Then the daily change of the portfolio would be deconstructed by using 
+weights from the previous day
+
+\begin{equation}
+\begin{aligned}
+e^{R^{(L)}_t} &= \dfrac{V_t}{V_{t-1}} & \text{by definition} \\
+&= \dfrac{\sum_{i}^{N} n_i P_{i,t-1} e^{R^{(L)}_{i,t}}}{V_{t-1}}
+= \sum_{i}^{N} \dfrac{n_i P_{i,t-1}}{V_{t-1}} e^{R^{(L)}_{i,t}} 
+& \text{by expansion} \\
+&= \sum_{i}^{N} w_{i,t-1} e^{R^{(L)}_{i,t}} & \text{weight definition}
+\label{eq:weighted_return}
+\end{aligned}
+\end{equation}
+
+where $w_{i,t-1}$ is the weight ratio of asset $i$ in the entire portfolio.
+Interesting this demonstrate the exact relationship between daily change ratio
+of the portfolio and that of the constituent assets if we replace the expoentials:
+\[
+\dfrac{V_t}{V_{t-1}} = \sum_{i}^{N} w_{i,t-1} \dfrac{V_{i,t}}{V_{i,t-1}}
+= \sum_{i}^{N} w_{i,t-1} \dfrac{P_{i,t}}{P_{i,t-1}}
+\]
+where $V_{i,t}$ is the total value of asset $i$ on day $t$. Though this is an 
+exact relationship between constituent price change and portfolio value change.
+
+Approximately, when daily changes are small, simple return and logrithmic return 
+are close. Then \eqref{eq:weighted_return} can be written as
+\[
+1+R_t = \sum_{i}^{N} w_{i,t-1} (1+r_{i,t}) 
+\]
+where $R_t$ is portfolio return and $r_{i,t}$ is asset return.
+
+Given that \(\sum_{1}^{N} w_{i,t-1} = 1\), we have 
+\begin{equation}
+R_t = \sum_{i}^{N} w_{i,t-1} r_{i,t} \label{eq:linearity_of_return_sum}    
+\end{equation}
+
+This can be also written in a vector form
+\begin{equation}
+R_t = \bm{w}^T_{t-1} \bm{r}_t \label{eq:linearity_of_return_vector}    
+\end{equation}
+where \(\bm{w}_{t-1}\) and \(\bm{r}_t\) are both $N \times 1$ vectors.
+
+
+
+\end{document}
