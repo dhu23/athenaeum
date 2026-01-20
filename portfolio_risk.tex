@@ -19,6 +19,9 @@ Let \(P_{i,t}\) denote price of asset $i$ at day $t$.
 Let \(n_i\) denote number of shares of asset $i$. This stays constant for
 each asset respectively. 
 
+Name \(\dfrac{P_{i,t}}{P_{i,t-1}}\) as price change factor, \(X_{i,t}\) 
+for convenience
+
 We can obtain the following two type of returns:
 
 \begin{itemize}
@@ -38,15 +41,16 @@ We can obtain the following two type of returns:
 
 In exact form, we hvae 
 \[
-1+R^{(S)}_{i,t} = e^{R^{(L)}_{i,t}}
+1+R^{(S)}_{i,t} = e^{R^{(L)}_{i,t}} = X_{i,t}
 \]
 
-Notice that when \(\frac{P_{i,t}}{P_{i,t-1}} \approx 1\), 
+Notice that when \(\dfrac{P_{i,t}}{P_{i,t-1}} \approx 1\), 
 the above two returns are equivalent, that is 
 \(R^{(S)}_{i,t} \approx R^{(L)}_{i,t}\) when \(P_{i,t} \approx P_{i,t-1}\)
 for small daily price changes.
 
 \section{Portfolio Daily Return}
+\subsection{Exact Form}
 Here we work our portfolio daily return using both simple return and 
 logrithmic return at asset level. Given that simple return is a first order
 approximation of logrithmic return at asset level, we will try to derive 
@@ -62,26 +66,25 @@ Then the daily change of the portfolio would be deconstructed by using
 weights from the previous day
 
 \begin{equation}
-\begin{aligned}
-e^{R^{(L)}_t} &= \dfrac{V_t}{V_{t-1}} & \text{by definition} \\
-&= \dfrac{\sum_{i}^{N} n_i P_{i,t-1} e^{R^{(L)}_{i,t}}}{V_{t-1}}
-= \sum_{i}^{N} \dfrac{n_i P_{i,t-1}}{V_{t-1}} e^{R^{(L)}_{i,t}} 
-& \text{by expansion} \\
-&= \sum_{i}^{N} w_{i,t-1} e^{R^{(L)}_{i,t}} & \text{weight definition}
-\label{eq:weighted_return}
-\end{aligned}
+    \begin{aligned}
+        X_{t} &= \dfrac{V_t}{V_{t-1}} & \text{by definition} \\
+        &= \dfrac{\sum_{i}^{N} n_i P_{i,t-1} X_{i,t}}{V_{t-1}}
+        = \sum_{i}^{N} \dfrac{n_i P_{i,t-1}}{V_{t-1}} X_{i,t} 
+        & \text{by expansion} \\
+        &= \sum_{i}^{N} w_{i,t-1} X_{i,t} & \text{weight definition} \\
+        &= \sum_{i}^{N} w_{i,t-1} \dfrac{P_{i,t}}{P_{i,t-1}} 
+        & \text{using price change}
+        \label{eq:weighted_return}
+    \end{aligned}
 \end{equation}
 
 where $w_{i,t-1}$ is the weight ratio of asset $i$ in the entire portfolio.
-Interesting this demonstrate the exact relationship between daily change ratio
-of the portfolio and that of the constituent assets if we replace the expoentials:
-\[
-\dfrac{V_t}{V_{t-1}} = \sum_{i}^{N} w_{i,t-1} \dfrac{V_{i,t}}{V_{i,t-1}}
-= \sum_{i}^{N} w_{i,t-1} \dfrac{P_{i,t}}{P_{i,t-1}}
-\]
+Interestingly this demonstrates the exact relationship between daily change ratio
+of the portfolio and that of the constituent assets
 where $V_{i,t}$ is the total value of asset $i$ on day $t$. Though this is an 
 exact relationship between constituent price change and portfolio value change.
 
+\subsection{Practial approximations}
 Approximately, when daily changes are small, simple return and logrithmic return 
 are close. Then \eqref{eq:weighted_return} can be written as
 \[
@@ -91,15 +94,49 @@ where $R_t$ is portfolio return and $r_{i,t}$ is asset return.
 
 Given that \(\sum_{1}^{N} w_{i,t-1} = 1\), we have 
 \begin{equation}
-R_t = \sum_{i}^{N} w_{i,t-1} r_{i,t} \label{eq:linearity_of_return_sum}    
+    R_t = \sum_{i}^{N} w_{i,t-1} r_{i,t} \label{eq:linearity_of_return_sum}    
 \end{equation}
 
 This can be also written in a vector form
 \begin{equation}
-R_t = \bm{w}^T_{t-1} \bm{r}_t \label{eq:linearity_of_return_vector}    
+    R_t = \bm{w}^T_{t-1} \bm{r}_t \label{eq:linearity_of_return_vector}    
 \end{equation}
 where \(\bm{w}_{t-1}\) and \(\bm{r}_t\) are both $N \times 1$ vectors.
 
+\subsection{Is weight vector approximately constant?}
+Let us understand how $w_{i,t}$ evolves over time. Denote $V_{i,t}$ the value
+of asset $i$ on day $t$
+\[
+w_{i,t} = \dfrac{V_{i,t}}{V_t} 
+= \dfrac{V_{i,t} / V_{t-1}}{V_t / V_{t-1}}
+= \dfrac{\dfrac{V_{i,t}}{V_{i,t-1}} \dfrac{V_{i,t-1}}{V_{t-1}}}{\dfrac{V_t}{V_{t-1}}} 
+\]
+where: \\
+\begin{tabular}{ll} % means two columns, both are of left-aligned (denoted l)
+    $\dfrac{V_{i,t}}{V_{i,t-1}}$ & is the growth of asset $i$ on day $t$, $X_{i,t}$. \\
+    $\dfrac{V_{i,t-1}}{V_{t-1}}$ & is the weight of asset $i$ on day $t-1$, $w_{i,t-1}$. \\
+    $\dfrac{V_t}{V_{t-1}}$ & is the growth of portfolio, see \eqref{eq:weighted_return}  
+\end{tabular}
+We obtain approximately when returns are small:
+\begin{equation}
+    \begin{aligned}
+        w_{i,t} &= \dfrac{w_{i,t-1} X_{i,t} }{\sum_{j}^{N} w_{j,t-1} X_{j,t}} \\
+        &\approx \dfrac{w_{i,t-1}(1+r_{i,t})}{1 + \sum_{j}^{N} w_{j,t-1} r_{j,t}} 
+        & \text{replacing $X$ by $1+r$} \\
+        &\approx w_{i,t-1}(1+r_{i,t}) (1 - \sum_{j}^{N} w_{j,t-1} r_{j,t}) 
+        & \text{first order expansion} \\
+        &=w_{i,t-1}(1+r_{i,t}) (1 - \bm{w}^T_{t-1} \bm{r}_t) 
+        &\text{use vector form} \\
+        &=w_{i,t-1}(1+r_{i,t}-\bm{w}^T_{t-1} \bm{r}_t) 
+        &\text{ignore second order terms of $r$}
+    \end{aligned}
+\end{equation}
+The crux is that 
+\begin{equation}
+    \begin{aligned}
+        w_{i,t} &\approx w_{i,t-1} + O(r) &\text{where r is small}    
+    \end{aligned}
+\end{equation}
 
 
 \end{document}
