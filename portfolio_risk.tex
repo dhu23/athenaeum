@@ -84,7 +84,7 @@ of the portfolio and that of the constituent assets
 where $V_{i,t}$ is the total value of asset $i$ on day $t$. Though this is an 
 exact relationship between constituent price change and portfolio value change.
 
-\subsection{Practial approximations}
+\subsection{Practial Approximations}
 Approximately, when daily changes are small, simple return and logrithmic return 
 are close. Then \eqref{eq:weighted_return} can be written as
 \[
@@ -131,12 +131,64 @@ We obtain approximately when returns are small:
         &\text{ignore second order terms of $r$}
     \end{aligned}
 \end{equation}
-The crux is that 
+The crux is that the difference of weights between neighboring days is at the 
+first order of $r$. 
 \begin{equation}
     \begin{aligned}
         w_{i,t} &\approx w_{i,t-1} + O(r) &\text{where r is small}    
     \end{aligned}
 \end{equation}
+which would lead \eqref{eq:linearity_of_return_vector} to be rewritten as
+\begin{equation}
+    R_t = (\bm{w}^T_0 + O(r)) \bm{r}_t = \bm{w}^T_0 \bm{r}_t + O(r^2)
+    \approx \bm{w}^T \bm{r}_t
+    \label{eq:portfolio_return_linearity_approximation}
+\end{equation}
+The intuition is that though weight vector changes slowly over time, however
+as far as the return of the portfolio is concerned, the impact of drift is 
+at second-order. That's why in practice, the initial weight vector is used to 
+perform the risk modeling
 
+\subsection{Portfolio Risk}
+The model is now equivalently a linear model if we write 
+\eqref{eq:portfolio_return_linearity_approximation} using a generic 
+\(\bm{w}=(w_1,w_2,w_3,...,w_N)^T\). 
+Let's consider the random variable for each asset $i$ as $r_i$ (dropping $t$). 
+When it is small, it is the same as the logrithmic return which is usually
+modeled by a normal distribution, $r_i \sim \mathcal{N}(\mu_i, \sigma^2_i)$.
+Then we can compute the portfolio return $R$ as a function of 
+the random variables $r_i$.
+\begin{equation}
+    \begin{aligned}
+        \operatorname{E}(R) &= \bm{w}^T \operatorname{E}(\bm{r}) \\
+        \operatorname{Var}(R) 
+        &= \operatorname{Var}(\bm{w}^T \bm{r}) = \bm{w}^T \bm{\Sigma}_r \bm{w}
+    \end{aligned}
+\end{equation}
+where $\bm{\Sigma}_r$ is the covariance matrix of $r$.
+We can also write that in terms of summation for variance of a linear combination
+of random variables, as follows 
+\begin{equation}
+    \begin{aligned}
+        \operatorname{Var}(R) &= \operatorname{Var}(\sum_{i}^{N} w_{i} r_{i}) \\
+        &= \sum_{i}^{N} w^2_{i,t} \operatorname{Var}(r_{i}) 
+        + 2 \sum_{i,j,i<j}^{N} w_i w_j \operatorname{Cov}(r_i, r_j) \\
+        &= \begin{bmatrix}
+            w_1 & w_2 & \cdots & w_N
+        \end{bmatrix}
+        \begin{bmatrix}
+            \sigma^2_1 & \sigma_{1,2} & \cdots & \sigma_{1,N} \\\\
+            \sigma_{2,1} & \sigma^2_2 & \cdots & \sigma_{2,N} \\\\
+            \vdots & \vdots & & \vdots \\\\
+            \sigma_{N,1} & \sigma_{N,2} & \cdots & \sigma^2_N
+        \end{bmatrix}
+        \begin{bmatrix}
+            w_1 \\\\
+            w_2 \\\\
+            \vdots \\\\
+            w_N
+        \end{bmatrix}
+    \end{aligned}
+\end{equation}
 
 \end{document}
