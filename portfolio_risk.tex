@@ -4,8 +4,15 @@
 \usepackage{bm}
 
 \begin{document}
-We go through the details of how portfolio level risk profile is derived.
-In this document we will consider both simple return and logrithmic return
+We go through the details of how portfolio level risk profile is derived 
+in a portfolio that satisfies the following conditions:
+\begin{itemize}
+    \item No external cash flows (self-financing)
+    \item No leverage change
+    \item No rebalancing intraday
+    \item Constituent assets and portfolio are priced at the end of each day.
+\end{itemize}
+In this document we will consider both simple return and log return
 and their differences in deriving the conclusion.
 
 \section{Definition of Asset/Portfolio Return}
@@ -31,7 +38,7 @@ We can obtain the following two type of returns:
     \end{math}
     
     which implies that \(P_{i,t} = (1+R^{(S)}_{i,t})P_{i,t-1}\)
-    \item logrithmic return:
+    \item log return:
     \begin{math}
     R^{(L)}_{i,t} = \displaystyle \ln{\frac{P_{i,t}}{P_{i,t-1}}}
     \end{math}
@@ -51,10 +58,6 @@ for small daily price changes.
 
 \section{Portfolio Daily Return}
 \subsection{Exact Form}
-Here we work our portfolio daily return using both simple return and 
-logrithmic return at asset level. Given that simple return is a first order
-approximation of logrithmic return at asset level, we will try to derive 
-using logrithmic first:
 
 let \(V_t\) be the asset value of day $t$, which can be written as 
 \[
@@ -85,12 +88,12 @@ where $V_{i,t}$ is the total value of asset $i$ on day $t$. Though this is an
 exact relationship between constituent price change and portfolio value change.
 
 \subsection{Practial Approximations}
-Approximately, when daily changes are small, simple return and logrithmic return 
+Approximately, when daily changes are small, simple return and log return 
 are close. Then \eqref{eq:weighted_return} can be written as
 \[
 1+R_t = \sum_{i}^{N} w_{i,t-1} (1+r_{i,t}) 
 \]
-where $R_t$ is portfolio return and $r_{i,t}$ is asset return.
+where $R_t$ is portfolio return and $r_{i,t}$ is asset $i$ return on day $t$.
 
 Given that \(\sum_{1}^{N} w_{i,t-1} = 1\), we have 
 \begin{equation}
@@ -101,7 +104,8 @@ This can be also written in a vector form
 \begin{equation}
     R_t = \bm{w}^T_{t-1} \bm{r}_t \label{eq:linearity_of_return_vector}    
 \end{equation}
-where \(\bm{w}_{t-1}\) and \(\bm{r}_t\) are both $N \times 1$ vectors.
+where \(\bm{w}_{t-1} = (w_{1,t-1}, w_{2,t-1},...,w_{N,t-1})^T\) and 
+\(\bm{r}_t=(r_{1,t}, r_{2,t},...,r_{N,t})^T\) are both $N \times 1$ vectors.
 
 \subsection{Is weight vector approximately constant?}
 Let us understand how $w_{i,t}$ evolves over time. Denote $V_{i,t}$ the value
@@ -154,10 +158,16 @@ The model is now equivalently a linear model if we write
 \eqref{eq:portfolio_return_linearity_approximation} using a generic 
 \(\bm{w}=(w_1,w_2,w_3,...,w_N)^T\). 
 Let's consider the random variable for each asset $i$ as $r_i$ (dropping $t$). 
-When it is small, it is the same as the logrithmic return which is usually
-modeled by a normal distribution, $r_i \sim \mathcal{N}(\mu_i, \sigma^2_i)$.
-Then we can compute the portfolio return $R$ as a function of 
-the random variables $r_i$.
+When it is small, it is the same as the log return which is often modeled by 
+normal distribution, $r_i \sim \mathcal{N}(\mu_i, \sigma^2_i)$ for analytical 
+convenience. Let $R$ be the random varible for the portfolio return. On day $t$,
+it takes the value of $R_t$. Similarily, let $r_i$ be the random variable for the
+daily return of asset $i$. On day $t$, it takes the value of $r_{i,t}$. 
+And let $\bm{r}$ be the random vector $(r_1, r_2,...,r_N)^T$. So for any given day,
+$R = \bm{w}^T \bm{r}$. Across different days, $\bm{r}$ is considered i.i.d.
+
+Now we have estabblished the relationship between the random variables, 
+we can compute the expected value and variance of $R$.
 \begin{equation}
     \begin{aligned}
         \operatorname{E}(R) &= \bm{w}^T \operatorname{E}(\bm{r}) \\
@@ -187,8 +197,12 @@ of random variables, as follows
             w_2 \\\\
             \vdots \\\\
             w_N
-        \end{bmatrix}
+        \end{bmatrix} \\
+        &= \bm{w}^T \bm{\Sigma}_r \bm{w}
     \end{aligned}
 \end{equation}
+Apparently we observe that risk (variance of return) is not additive given a 
+linear relationship between portfolio return and asset returns. Correlation
+between assets matters. 
 
 \end{document}
