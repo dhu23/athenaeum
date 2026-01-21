@@ -180,8 +180,9 @@ We can also write that in terms of summation for variance of a linear combinatio
 of random variables, as follows 
 \begin{equation}
     \begin{aligned}
-        \operatorname{Var}(R) &= \operatorname{Var}(\sum_{i}^{N} w_{i} r_{i}) \\
-        &= \sum_{i}^{N} w^2_{i,t} \operatorname{Var}(r_{i}) 
+        \operatorname{Var}(R) 
+        &= \operatorname{Var}\left(\sum_{i}^{N} w_{i} r_{i}\right) \\
+        &= \sum_{i}^{N} w^2_{i} \operatorname{Var}(r_{i}) 
         + 2 \sum_{i,j,i<j}^{N} w_i w_j \operatorname{Cov}(r_i, r_j) \\
         &= \begin{bmatrix}
             w_1 & w_2 & \cdots & w_N
@@ -201,6 +202,9 @@ of random variables, as follows
         &= \bm{w}^T \bm{\Sigma}_r \bm{w}
     \end{aligned}
 \end{equation}
+where $\operatorname{Var}(r_i)=\sigma^2_i$ and 
+$\operatorname{Cov}(r_i,r_j)=\sigma_{i,j}$.
+
 Apparently we observe that risk (variance of return) is not additive given a 
 linear relationship between portfolio return and asset returns. Correlation
 between assets matters. 
