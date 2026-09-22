@@ -1,0 +1,62 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{bm}
+
+\begin{document}
+This is to build up some intuition about option pricing and trading
+strategies. We will use the following notation:
+\begin{itemize}
+    \item $S_0$: Current stock price
+    \item $K$: Strike price of option
+    \item $T$: Time to expiration of option
+    \item $S_T$: Stock price at maturity
+    \item $r$: Continuously compounded risk-free rate of interest for an investment maturing in time $T$
+    \item $C$: Value of American call option to buy on share
+    \item $P$: Value of American put option to sell one share
+    \item $c$: Value of European call option to buy one share
+    \item $p$: Value of European put option to sell one share
+\end{itemize}
+
+\section{Basic Boundaries}
+\begin{itemize}
+    \item American options are more valuable than European options: 
+    \(C \ge c, P \ge p\)
+    \item call options can't be worth more than the stock: 
+    \(C \le S_0, c \le S_0\)
+    \item put options gives the right to sell one share for $K$, 
+    so it can't be worth more than $K$: 
+    \(p \le K, P \le K\)	    
+\end{itemize}
+
+\section{Put-Call parity}
+Consider the following 4 portfolios for a non-dividend-paying stock
+\begin{itemize}
+    \item Portfolio A: one European call option plus a mount of cash equal to \(Ke^{-rT}\)
+    \item Portfolio B: one European put option plus one share	    
+    \item Portfolio C: one share
+    \item Portfolio D: an amount of cash equal to \(Ke^{-rt}\)
+\end{itemize}
+These 4 portfolios should be very reasonable and intuitive to think about. 
+Portfolio A holds a call with potential cash to buy stock. 
+Portfolio B holds a put with a share to potentially sell. 
+Portfolio C holds a single share while portfolio D holds just cash.
+At time $T$, these 4 portfolios are:
+\begin{itemize}
+    \item Portfolio A: 
+    if \(S_T \le K\), option worths nothing, the cash equals to $K$.
+    if \(S_T > K\), we exercise the option by using the cash that 
+    is equal to $K$ to to buy one share which is valued at $S_T$. 
+    So the value of the portfolio is \(\max(S_T, K)\)
+    \item Portfolio B: 
+    if \(S_T \ge K\), option worths nothing, we have one share that is
+    valued at $S_T$.
+    if \(S_T < K\), we exercise the option by selling the share at $K$ and 
+    we hold cash equal to $K$ at the end. 
+    So the value of the portfolio is \(max(S_T, K)\). 
+    \item Portfolio C: one share
+    \item Portfolio D: an amount of cashe equal to $K$
+\end{itemize}
+\subsection{Boundaries for European options}
+
+\end{document}
