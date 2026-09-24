@@ -18,18 +18,7 @@ strategies. We will use the following notation:
     \item $p$: Value of European put option to sell one share
 \end{itemize}
 
-\section{Basic Boundaries}
-\begin{itemize}
-    \item American options are more valuable than European options: 
-    \(C \ge c, P \ge p\)
-    \item call options can't be worth more than the stock: 
-    \(C \le S_0, c \le S_0\)
-    \item put options gives the right to sell one share for $K$, 
-    so it can't be worth more than $K$: 
-    \(p \le K, P \le K\)	    
-\end{itemize}
-
-\section{Put-Call parity}
+\section{Interesting Portfolios}
 Consider the following 4 portfolios for a non-dividend-paying stock
 \begin{itemize}
     \item Portfolio A: one European call option plus a mount of cash equal to \(Ke^{-rT}\)
@@ -57,6 +46,60 @@ At time $T$, these 4 portfolios are:
     \item Portfolio C: one share
     \item Portfolio D: an amount of cashe equal to $K$
 \end{itemize}
-\subsection{Boundaries for European options}
+
+This can be summarized as the following table content:
+
+\begin{tabular}{c c c c}
+    \hline \\
+    Portfolio & t=0 & t=T & Note \\
+    \hline \\
+    1 & \(c + Ke^{-rT}\) & \(\max(S_T, K)\) & covered call \\
+    2 & \(p + S_0\) & \(\max(S_T, K)\) & protected put \\
+    3 & $S_0$ & $S_T$ & underlying stock \\
+    4 & \(Ke^{-rT}\) & $K$ & cash \\
+    \hline
+\end{tabular}
+
+\section{Basic Boundaries}
+\begin{itemize}
+    \item American options are more valuable than European options: 
+    \(C \ge c, P \ge p\)
+    \item call options can't be worth more than the stock: 
+    \(C \le S_0, c \le S_0\)
+    \item put options gives the right to sell one share for $K$, 
+    so it can't be worth more than $K$: 
+    \(p \le K, P \le K\)	    
+\end{itemize}
+
+\subsection{Boundaries for European call options}
+Consider Portfolio 1 and 3. At time $T$, you can observe that the
+value of Portfolio 1 always worth as much as, and can be worth more than
+Portfolio 3. \textit{It follows that in the absence of arbitrage opportunites this
+must also be true today}. Hence,
+\[
+c + Ke^{-rT} \ge S_0
+\]
+Combine with the fact that option price needs to be positve and the boundary 
+established above, we have:
+\[
+\max(S_0 - Ke^{-rT}, 0) \le c \le S_0
+\]
+
+\subsection{Boundaries for European put options}
+Consider Portfolio 2 and 4. At time $T$, you can observe that the value 
+of Portfolio 2 always worth as much as, and can be worth more than
+Portfolio 3. \textit{It follows that in the absense of arbitrage opportunites
+this must also be true today}. Hence,
+\[
+p + S_0 \ge Ke^{-rT}
+\]
+Combine with the fact that option price needs to be positve and the boundary
+established earlier, we have:
+\[
+\max(Ke^{-rT} - S_0, 0) \le p \le Ke^{-rT}
+\]
+
+\section{Pull-Call Partity}
+
 
 \end{document}
