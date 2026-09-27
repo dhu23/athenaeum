@@ -132,7 +132,9 @@ c + D + Ke^{-rT} = p + S_0
 \]
 
 \subsection{American options}
-\subsection{Trading Strategies with a single option}
+
+\subsection{Trading Strategies}
+\subsubsection{Using a single option}
 Let's consider trading strategies that can be explained by put-call parity.
 \[
 p + S_0 = c + Ke^{-rT} + D
@@ -148,5 +150,25 @@ S_0 - c = Ke^{-rT} + D - p
 This can be read as: a short position in a call with a long position in the stock is
 equivalent to a short put position plus a certain amount of cash $Ke^{-rT} + D$. 
 This is a \textbf{covered call}. 
+
+\subsubsection{Bull Spread}
+This can be done two ways with two strike prices $K_1$, $K_2$ with $K_1 < K_2$.
+\begin{itemize}
+    \item long a call with $K_1$, short a call with $K_2$.
+    \item long a put with $K_1$, short a put with $K_2$
+\end{itemize}
+
+\subsubsection{Bear Spread}
+This can be done two ways with two strike prices $K_1$, $K_2$ with $K_1 < K_2$.
+\begin{itemize}
+    \item short a put with $K_1$, long a put with $K_2$
+    \item short a call with $K_1$, long a call with $K_2$
+\end{itemize}
+
+\subsubsection{Straddle}
+
+\subsubsection{Strip and Strap}
+
+\subsubsection{Strangles}
 
 \end{document}
